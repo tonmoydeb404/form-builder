@@ -12,7 +12,6 @@ type ValidationProps = {
 export enum InputFieldTypeEnum {
   "TEXT" = "TEXT",
   "URL" = "URL",
-  "DATE" = "DATE",
   "NUMBER" = "NUMBER",
   "TEXTAREA" = "TEXTAREA",
   "EMAIL" = "EMAIL",
@@ -30,6 +29,15 @@ export type PhoneFieldType = keyof typeof PhoneFieldTypeEnum;
 export type PhoneField = CommonProps &
   Pick<ValidationProps, "optional"> & {
     type: PhoneFieldType;
+  };
+
+export enum DateFieldTypeEnum {
+  "DATE" = "DATE",
+}
+export type DateFieldType = keyof typeof DateFieldTypeEnum;
+export type DateField = CommonProps &
+  Pick<ValidationProps, "optional"> & {
+    type: DateFieldType;
   };
 
 export enum DropdownFieldTypeEnum {
@@ -64,8 +72,15 @@ export type ListField = CommonProps &
 
 export type FormFieldType =
   | InputFieldType
+  | DateFieldType
   | GroupFieldType
   | ListFieldType
   | PhoneFieldType
   | DropdownFieldType;
-export type FormField = InputField | GroupField | ListField;
+export type FormField =
+  | InputField
+  | DateField
+  | GroupField
+  | ListField
+  | PhoneField
+  | DropdownField;

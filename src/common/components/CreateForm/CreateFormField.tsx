@@ -6,6 +6,7 @@ import { FormFieldType } from "../../../types/form.type";
 import resolveObjectPath from "../../../utils/resolveObjectPath";
 import CreateFormGroup from "./CreateFormGroup";
 import CreateFormOptions from "./CreateFormOptions";
+import CreateFormValidation from "./CreateFormValidation";
 
 type Props = {
   name: string;
@@ -126,6 +127,10 @@ const CreateFormField = ({ name }: Props) => {
             <CreateFormOptions name={`${name}.options`} />
           </Grid>
         ) : null}
+
+        <Grid item xs={12}>
+          <CreateFormValidation name={name} type={watchType} />
+        </Grid>
       </Grid>
     </div>
   );

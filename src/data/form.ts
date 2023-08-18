@@ -1,4 +1,5 @@
 import {
+  DateFieldType,
   DropdownFieldType,
   FormFieldType,
   GroupFieldType,
@@ -20,22 +21,23 @@ export const fieldTypeTitles: Record<FormFieldType, string> = {
   EMAIL: "Email",
 };
 
-export const inputTypes: readonly InputFieldType[] = [
-  "DATE",
+export const inputTypes: InputFieldType[] = [
   "EMAIL",
   "NUMBER",
   "TEXT",
   "TEXTAREA",
   "URL",
 ];
-export const listType: ListFieldType = "LIST";
-export const groupType: GroupFieldType = "GROUP";
-export const phoneType: PhoneFieldType = "PHONE";
-export const dropdownType: DropdownFieldType = "DROPDOWN";
+export const dateTypes: DateFieldType[] = ["DATE"];
+export const listTypes: ListFieldType[] = ["LIST"];
+export const groupTypes: GroupFieldType[] = ["GROUP"];
+export const phoneTypes: PhoneFieldType[] = ["PHONE"];
+export const dropdownTypes: DropdownFieldType[] = ["DROPDOWN"];
 export const fieldTypes: FormFieldType[] = [
   ...inputTypes,
-  listType,
-  groupType,
-  phoneType,
-  dropdownType,
+  ...dateTypes,
+  ...listTypes,
+  ...groupTypes,
+  ...phoneTypes,
+  ...dropdownTypes,
 ];
