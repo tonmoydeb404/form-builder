@@ -9,32 +9,53 @@ type ValidationProps = {
   minLength?: number;
 };
 
-export type InputFieldType = "TEXT" | "URL" | "DATE" | "NUMBER" | "TEXTAREA";
+export enum InputFieldTypeEnum {
+  "TEXT" = "TEXT",
+  "URL" = "URL",
+  "DATE" = "DATE",
+  "NUMBER" = "NUMBER",
+  "TEXTAREA" = "TEXTAREA",
+  "EMAIL" = "EMAIL",
+}
+export type InputFieldType = keyof typeof InputFieldTypeEnum;
 export type InputField = CommonProps &
   ValidationProps & {
     type: InputFieldType;
   };
 
-export type PhoneFieldType = "PHONE";
+export enum PhoneFieldTypeEnum {
+  "PHONE" = "PHONE",
+}
+export type PhoneFieldType = keyof typeof PhoneFieldTypeEnum;
 export type PhoneField = CommonProps &
   Pick<ValidationProps, "optional"> & {
     type: PhoneFieldType;
   };
 
-export type DropdownFieldType = "DROPDOWN";
+export enum DropdownFieldTypeEnum {
+  "DROPDOWN" = "DROPDOWN",
+}
+export type DropdownFieldType = keyof typeof DropdownFieldTypeEnum;
+export type DropdownOptionType = { title: string; value: string };
 export type DropdownField = CommonProps &
   Pick<ValidationProps, "optional"> & {
     type: DropdownFieldType;
-    options: Record<string, string>;
+    options: DropdownOptionType[];
   };
 
-export type GroupFieldType = "GROUP";
+export enum GroupFieldTypeEnum {
+  "GROUP" = "GROUP",
+}
+export type GroupFieldType = keyof typeof GroupFieldTypeEnum;
 export type GroupField = CommonProps & {
   type: GroupFieldType;
   fields: (InputField | ListField | GroupField)[];
 };
 
-export type ListFieldType = "LIST";
+export enum ListFieldTypeEnum {
+  "LIST" = "LIST",
+}
+export type ListFieldType = keyof typeof ListFieldTypeEnum;
 export type ListField = CommonProps &
   ValidationProps & {
     type: ListFieldType;

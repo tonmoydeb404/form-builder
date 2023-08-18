@@ -5,6 +5,7 @@ import { fieldTypeTitles } from "../../../data/form";
 import { FormFieldType } from "../../../types/form.type";
 import resolveObjectPath from "../../../utils/resolveObjectPath";
 import CreateFormGroup from "./CreateFormGroup";
+import CreateFormOptions from "./CreateFormOptions";
 
 type Props = {
   name: string;
@@ -117,6 +118,12 @@ const CreateFormField = ({ name }: Props) => {
             >
               <CreateFormField name={`${name}.field`} />
             </Box>
+          </Grid>
+        ) : null}
+
+        {watchType === "DROPDOWN" ? (
+          <Grid item xs={12}>
+            <CreateFormOptions name={`${name}.options`} />
           </Grid>
         ) : null}
       </Grid>

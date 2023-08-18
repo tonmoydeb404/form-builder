@@ -16,7 +16,7 @@ const RenderForm = ({ state }: Props) => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 10 }}>
           {state.map((field) => (
             <RenderFormField field={field} key={field.key} name={field.key} />
           ))}

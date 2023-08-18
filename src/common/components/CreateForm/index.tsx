@@ -2,7 +2,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Stack } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
 import * as z from "zod";
-import { FormField } from "../../../types/form.type";
+import {
+  DropdownFieldTypeEnum,
+  FormField,
+  GroupFieldTypeEnum,
+  InputFieldTypeEnum,
+  ListFieldTypeEnum,
+  PhoneFieldTypeEnum,
+} from "../../../types/form.type";
 import validateFields from "../../../utils/validField";
 import CreateFormGroup from "./CreateFormGroup";
 
@@ -26,14 +33,34 @@ const checkUniqueKey = (arg: any[], ctx: z.RefinementCtx) => {
   });
 };
 
-const inputTypeEnum = z.enum(["DATE", "TEXT", "URL"]);
-const groupTypeEnum = z.enum(["GROUP"]);
-const listTypeEnum = z.enum(["LIST"]);
+const inputTypeEnum = z.nativeEnum(InputFieldTypeEnum);
+const groupTypeEnum = z.nativeEnum(GroupFieldTypeEnum);
+const listTypeEnum = z.nativeEnum(ListFieldTypeEnum);
+const phoneTypeEnum = z.nativeEnum(PhoneFieldTypeEnum);
+const dropdownTypeEnum = z.nativeEnum(DropdownFieldTypeEnum);
 
 const inputSchema = z.object({
   key: z.string().trim().min(1).max(30),
   label: z.string().trim().min(2).max(30),
   type: inputTypeEnum,
+});
+
+const phoneSchema = z.object({
+  key: z.string().trim().min(1).max(30),
+  label: z.string().trim().min(2).max(30),
+  type: phoneTypeEnum,
+});
+
+const dropdownOptionSchema = z.object({
+  title: z.string().min(1),
+  value: z.string().min(1),
+});
+
+const dropdownSchema = z.object({
+  key: z.string().trim().min(1).max(30),
+  label: z.string().trim().min(2).max(30),
+  options: z.array(dropdownOptionSchema),
+  type: dropdownTypeEnum,
 });
 
 const listSchema = (field: z.ZodType) =>
@@ -57,6 +84,8 @@ const fieldSchema: z.ZodType = z.lazy(() =>
     inputSchema,
     listSchema(fieldSchema),
     groupSchema(fieldSchema),
+    phoneSchema,
+    dropdownSchema,
   ])
 );
 
@@ -75,7 +104,7 @@ const CreateForm = ({ watchChanges }: Props) => {
   const { handleSubmit } = methods;
 
   const onSubmit = (value: any) => {
-    console.table(value);
+    console.log(value);
     watchChanges(validateFields(value.fields || []));
   };
 

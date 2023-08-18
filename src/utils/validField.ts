@@ -1,3 +1,4 @@
+import { dropdownType, inputTypes, phoneType } from "../data/form";
 import { FormField } from "../types/form.type";
 
 const validateFields = (fields: (FormField | any)[]): FormField[] => {
@@ -10,7 +11,11 @@ const validateFields = (fields: (FormField | any)[]): FormField[] => {
         validFields.push(field);
       } else if (field.type === "LIST" && field?.field) {
         validFields.push(field);
-      } else if (["TEXT", "DATE", "URL"].includes(field.type)) {
+      } else if (field.type === phoneType) {
+        validFields.push(field);
+      } else if (field.type === dropdownType) {
+        validFields.push(field);
+      } else if (inputTypes.includes(field.type)) {
         validFields.push(field);
       }
     }
