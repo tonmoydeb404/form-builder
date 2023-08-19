@@ -31,7 +31,7 @@ const CreateForm = ({ watchChanges }: Props) => {
 
         <Stack direction={"row"} spacing={1} sx={{ mt: 5 }}>
           <Button type="submit" variant="contained">
-            Submit
+            Generate
           </Button>
         </Stack>
       </form>

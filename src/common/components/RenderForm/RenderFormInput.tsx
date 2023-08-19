@@ -6,7 +6,9 @@ import {
   InputField,
   PhoneField,
 } from "../../../types/form.type";
+import { valueAsNumber } from "../../../utils/react-hook-form";
 import resolveObjectPath from "../../../utils/resolveObjectPath";
+import { validateInputType } from "../../schema/render-form-schema";
 
 type Props = {
   field: InputField | PhoneField | DropdownField | DateField;
@@ -19,10 +21,9 @@ const RenderFormInput = ({ field, name }: Props) => {
     formState: { errors },
   } = useFormContext();
 
-  const validation: RegisterOptions = {
+  let validation: Pick<RegisterOptions, "required" | "validate"> = {
     required: { value: !field?.optional, message: "Required" },
   };
-
   const error = resolveObjectPath(errors, `${name}`, false);
 
   if (field.type === "DROPDOWN") {
@@ -79,24 +80,18 @@ const RenderFormInput = ({ field, name }: Props) => {
     );
   }
 
-  validation.maxLength = field?.maxLength
-    ? {
-        value: field.maxLength,
-        message: `Maximum ${field.maxLength} values are allowed`,
-      }
-    : undefined;
-  validation.minLength = field?.minLength
-    ? {
-        value: field.minLength,
-        message: `Minimum ${field.minLength} values are required`,
-      }
-    : undefined;
+  validation = {
+    validate: (v) => {
+      const result = validateInputType({ ...field }).safeParse(v);
+      return result?.success || result.error.errors[0].message;
+    },
+  };
 
   if (field.type === "URL") {
     return (
       <TextField
         size="small"
-        type="url"
+        type="text"
         label={field.label}
         fullWidth
         {...register(name, { ...validation })}
@@ -113,7 +108,10 @@ const RenderFormInput = ({ field, name }: Props) => {
         type="number"
         label={field.label}
         fullWidth
-        {...register(name, { ...validation })}
+        {...register(name, {
+          setValueAs: valueAsNumber,
+          ...validation,
+        })}
         error={!!error}
         helperText={error?.message}
       />

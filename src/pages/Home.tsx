@@ -17,10 +17,10 @@ const Home = () => {
         Form Builder
       </Typography>
       <Grid container spacing={5}>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <CreateForm watchChanges={setState} />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <RenderForm state={state} />
         </Grid>
       </Grid>

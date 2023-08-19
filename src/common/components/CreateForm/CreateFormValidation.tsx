@@ -2,6 +2,7 @@ import { Checkbox, FormControlLabel, Stack, TextField } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { inputTypes } from "../../../data/form";
 import { FormFieldType, InputFieldType } from "../../../types/form.type";
+import { valueAsNumber } from "../../../utils/react-hook-form";
 import resolveObjectPath from "../../../utils/resolveObjectPath";
 
 type Props = {
@@ -24,7 +25,7 @@ const CreateFormValidation = ({ name, type }: Props) => {
             size="small"
             label="Max Length"
             fullWidth
-            {...register(`${name}.maxLength`, { valueAsNumber: true })}
+            {...register(`${name}.maxLength`, { setValueAs: valueAsNumber })}
             error={!!resolveObjectPath(errors, `${name}.maxLength`, false)}
             helperText={
               resolveObjectPath(errors, `${name}.maxLength`, false)?.message
@@ -35,7 +36,7 @@ const CreateFormValidation = ({ name, type }: Props) => {
             size="small"
             label="Minimum Length"
             fullWidth
-            {...register(`${name}.minLength`, { valueAsNumber: true })}
+            {...register(`${name}.minLength`, { setValueAs: valueAsNumber })}
             error={!!resolveObjectPath(errors, `${name}.minLength`, false)}
             helperText={
               resolveObjectPath(errors, `${name}.minLength`, false)?.message
