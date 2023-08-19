@@ -3,6 +3,7 @@ import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import { ReactNode } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { ListField } from "../../../types/form.type";
+import resolveObjectPath from "../../../utils/resolveObjectPath";
 import RenderFormField from "./RenderFormField";
 
 type Props = {
@@ -12,8 +13,29 @@ type Props = {
 };
 
 const RenderFormList = ({ list, name, element }: Props) => {
-  const { control } = useFormContext();
-  const { fields, append, remove } = useFieldArray({ control, name });
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name,
+    rules: {
+      maxLength: list?.maxLength
+        ? {
+            value: list.maxLength,
+            message: `Maximum ${list.maxLength} values are allowed`,
+          }
+        : undefined,
+      minLength: list?.minLength
+        ? {
+            value: list.minLength,
+            message: `Minimum ${list.minLength} values are required`,
+          }
+        : undefined,
+      required: { value: !list?.optional, message: "Required" },
+    },
+  });
 
   const appendField = () => {
     if (list.field.type === "GROUP") {
@@ -35,10 +57,13 @@ const RenderFormList = ({ list, name, element }: Props) => {
         borderRadius: "5px",
       }}
     >
-      <Stack>
-        <Typography variant="caption" sx={{ mb: 1 }}>
-          {list.label}
-        </Typography>
+      <Stack sx={{ mb: 1 }}>
+        <Stack>
+          <Typography variant="caption">{list.label}</Typography>
+          <Typography variant="caption" sx={{ color: "red" }}>
+            {resolveObjectPath(errors, `${name}.root`, false)?.message}
+          </Typography>
+        </Stack>
         {element}
       </Stack>
 
