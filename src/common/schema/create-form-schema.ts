@@ -41,8 +41,8 @@ const commonInputSchema = z.object({
 });
 
 const commonValidationSchema = z.object({
-  maxLength: z.number().min(1).optional(),
-  minLength: z.number().min(1).optional(),
+  maxLength: z.union([z.number().int().positive().min(1), z.nan()]).optional(),
+  minLength: z.union([z.number().int().positive().min(1), z.nan()]).optional(),
   optional: z.boolean().optional(),
 });
 

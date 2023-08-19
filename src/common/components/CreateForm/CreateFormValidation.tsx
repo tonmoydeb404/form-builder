@@ -48,7 +48,7 @@ const CreateFormValidation = ({ name, type }: Props) => {
           control={
             <Checkbox
               defaultChecked={false}
-              {...register(`${name}.minLength`, { required: false })}
+              {...register(`${name}.optional`)}
             />
           }
           label="Optional"
