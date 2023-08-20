@@ -1,5 +1,6 @@
 import { MenuItem, TextField } from "@mui/material";
-import { RegisterOptions, useFormContext } from "react-hook-form";
+import { MuiTelInput, matchIsValidTel } from "mui-tel-input";
+import { Controller, RegisterOptions, useFormContext } from "react-hook-form";
 import {
   DateField,
   DropdownField,
@@ -19,6 +20,7 @@ const RenderFormInput = ({ field, name }: Props) => {
   const {
     register,
     formState: { errors },
+    control,
   } = useFormContext();
 
   let validation: Pick<RegisterOptions, "required" | "validate"> = {
@@ -68,14 +70,23 @@ const RenderFormInput = ({ field, name }: Props) => {
 
   if (field.type === "PHONE") {
     return (
-      <TextField
-        size="small"
-        type="tel"
-        label={field.label}
-        fullWidth
-        {...register(name, { ...validation })}
-        error={!!error}
-        helperText={error?.message}
+      <Controller
+        name={name}
+        control={control}
+        rules={{
+          ...validation,
+          validate: (v) => matchIsValidTel(v) || "Enter a valid phone number",
+        }}
+        render={({ field: formField, fieldState }) => (
+          <MuiTelInput
+            size="small"
+            label={field.label}
+            fullWidth
+            {...formField}
+            error={!!fieldState.error}
+            helperText={fieldState?.error?.message}
+          />
+        )}
       />
     );
   }
